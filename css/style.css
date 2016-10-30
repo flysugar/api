@@ -1,0 +1,54 @@
+body {
+    font-family: Roboto, Helvetica, sans-serif;
+    font-size: 10pt;
+    color: #2e2e2e;
+}
+
+h1 {
+    font-size: 20pt;
+    font-weight: bold;
+    color: #0f0f0f;
+    border: 2px solid white;
+    padding: 4pt;
+    margin-bottom: 0;
+}
+
+p {
+    margin-top: 0;
+    padding: 4pt;
+    color: #0f0f0f;
+}
+
+label {
+  display: block;
+}
+
+input[type="text"] {
+  margin-bottom: 5pt;
+
+}
+
+tr.editForm {
+  background-color: lime;
+}
+
+a.save, a.cancelSave {
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+a.cancelSave {
+  color: red;
+}
+
+div.ajaxStatus {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: green;
+  font-size:8pt;
+  color: #fff;
+  padding: 5pt;
+  display: none;
+}

@@ -4,11 +4,13 @@ class Book implements JsonSerializable {
 	private $id;
 	private $name;
 	private $author;
+	private $book_desc;
 
-	public function __construct($name='', $author='') {
+	public function __construct($name='', $author='', $book_desc='') {
 		$this->id 		= -1;
 		$this->name 	= $name;
 		$this->author 	= $author;
+		$this->book_desc= $book_desc;
 	}
 
 	public function getId() {
@@ -31,12 +33,21 @@ class Book implements JsonSerializable {
 		$this->name = $name;
 	}
 
+	public function getBookDesc() {
+		return $this->book_desc;
+	}
+
+	public function setBookDesc($book_desc) {
+		$this->book_desc = $book_desc;
+	}
+
 	public function loadFromDB($conn, $id) {
-		$query = "SELECT name, author FROM books WHERE id=$id";
+		$query = "SELECT name, author, book_desc FROM books WHERE id=$id";
 		if ( $res = $conn->query($query) ) {
 			$row = $res->fetch_assoc();
 			$this->name = $row['name'];
 			$this->author = $row['author'];
+			$this->book_desc = $row['book_desc'];
 			$this->id = $id;
 			return true;
 		} else {
@@ -44,15 +55,17 @@ class Book implements JsonSerializable {
 		}
 	}
 
-	public function create($conn, $name, $author) {
+	public function create($conn, $author, $name, $book_desc) {
 		// przygotowanie wartosci do wprowadzenia do bazy danych
 		$safe_name = $conn->real_escape_string($name);
 		$safe_author = $conn->real_escape_string($author);
+		$safe_book_desc = $conn->real_escape_string($book_desc);
 
-		$query = "INSERT INTO books (name, author) VALUES ('$safe_name', '$safe_author')";
+		$query = "INSERT INTO books (name, author, book_desc) VALUES ('$safe_name', '$safe_author', '$book_desc')";
 		if ( $res = $conn->query($query) ) {
 			$this->name = $name;
 			$this->author = $author;
+			$this->book_desc = $book_desc;
 			$this->id = $conn->insert_id;
 			return true;
 		} else {
@@ -60,16 +73,18 @@ class Book implements JsonSerializable {
 		}
 	}
 
-	public function update($conn, $name, $author) {
+	public function update($conn, $name, $author, $book_desc) {
 		// przygotowanie wartosci do wprowadzenia do bazy danych
 		$safe_name = $conn->real_escape_string($name);
 		$safe_author = $conn->real_escape_string($author);
 		$safe_id = $conn->real_escape_string($this->id);
+		$safe_book_desc = $conn->real_escape_string($book_desc);
 
-		$query = "UPDATE books SET name='$safe_name', author='$safe_author' WHERE id=$safe_id";
+		$query = "UPDATE books SET name='$safe_name', author='$safe_author', book_desc='$book_desc' WHERE id=$safe_id";
 		if ( $res = $conn->query($query) ) {
 			$this->name = $name;
 			$this->author = $author;
+			$this->book_desc = $book_desc;
 			return true;
 		} else {
 			return false;
@@ -84,6 +99,7 @@ class Book implements JsonSerializable {
 		if ( $res = $conn->query($query) ) {
 			$this->name = '';
 			$this->author = '';
+			$this->book_desc = '';
 			$this->id = -1;
 			return true;
 		} else {
@@ -95,9 +111,9 @@ class Book implements JsonSerializable {
 		return [
 			'id'		=> $this->id,
 			'name' 		=> $this->name,
-			'author'	=> $this->author
+			'author'	=> $this->author,
+			'book_desc'	=> $this->book_desc
 		];
 	}
-
 }
 ?>

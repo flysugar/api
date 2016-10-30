@@ -10,7 +10,7 @@ if ($mysqli->connect_errno) {
 $mysqli->set_charset('utf8');
 echo $mysqli->host_info . "\n";
 
-$res = $mysqli->query("SELECT author, name FROM books ORDER BY author, name");
+$res = $mysqli->query("SELECT author, name, book_desc FROM books ORDER BY author, name");
 $books = [];
 while ($row = $res->fetch_assoc()) {
 	print $row['author'] . ':' . $row['name'] . "\n";
@@ -32,17 +32,17 @@ if ( $book->loadFromDB($mysqli, 5) ) {
 
 print "<hr/>";
 
-// INSERT / DELETE
-// if ( $book->create($mysqli, "Potop2", "Henryk Sienkiewicz2") ) {
-// 	var_dump( json_encode($book) );
-// 	$book->deleteFromDb($mysqli);
-// } else {
-// 	echo "ERROR: (" . $mysqli->errno . ") " . $mysqli->error;
-// }
-
 // UPDATE
-if ( $book->update($mysqli, "Pan Wołodyjowski", "Henryk Sienkiewicz") ) {
+if ( $book->update($mysqli, "Pan Wołodyjowski", "Henryk Sienkiewicz", "Opis książki2") ) {
 	var_dump( json_encode($book) );	
+} else {
+	echo "ERROR: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+
+// INSERT / DELETE
+if ( $book->create($mysqli, "Potop2", "Henryk Sienkiewicz2", "Opis ksiazki 22222") ) {
+	var_dump( json_encode($book) );
+	$book->deleteFromDb($mysqli);
 } else {
 	echo "ERROR: (" . $mysqli->errno . ") " . $mysqli->error;
 }
